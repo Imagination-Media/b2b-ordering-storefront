@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useAuth } from './auth-context';
 import Link from 'next/link';
 

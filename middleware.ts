@@ -1,3 +1,4 @@
+// Next.js middleware for handling authentication and protected routes
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 

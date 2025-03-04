@@ -1,6 +1,7 @@
 import { SalesRep, SalesRepAuthenticationResponse } from './types';
 
-const B2B_API_ENDPOINT = process.env.B2B_API_ENDPOINT || 'https://b2bapp-api.imdigital.com/';
+// Use NEXT_PUBLIC prefix for client-side environment variables in Next.js
+const B2B_API_ENDPOINT = process.env.NEXT_PUBLIC_B2B_API_ENDPOINT || 'https://b2bapp-api.imdigital.com/';
 
 export async function authenticateSalesRep(email: string, password: string): Promise<SalesRepAuthenticationResponse> {
   try {

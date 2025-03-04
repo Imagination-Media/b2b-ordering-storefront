@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function CustomerLoginPage() {
   return (
     <div className="mx-auto max-w-md py-12">

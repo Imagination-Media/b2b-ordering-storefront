@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from 'components/auth/auth-context';
 import { authenticateSalesRep } from 'lib/b2b';

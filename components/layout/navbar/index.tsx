@@ -1,10 +1,10 @@
+import React, { Suspense } from 'react';
 import CartModal from 'components/cart/modal';
 import LogoSquare from 'components/logo-square';
 import LoginButton from 'components/auth/login-button';
 import { getMenu } from 'lib/shopify';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
-import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
 import Search, { SearchSkeleton } from './search';
 
