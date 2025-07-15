@@ -1,75 +1,133 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME)
+# B2B Ordering Storefront
 
-# Next.js Commerce
+A high-performance, server-rendered Next.js App Router B2B ecommerce application with dual authentication system.
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+This application connects to the Imagination Media B2B ordering middleware API and provides separate login interfaces for sales representatives and customers. Built with React Server Components, Server Actions, `Suspense`, Apollo Client, and modern authentication patterns.
 
-This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
+## Features
 
-<h3 id="v1-note"></h3>
+### Dual Authentication System
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
+- **Sales Representative Login**: Full access to sales dashboard with customer management, orders, quotes, and more
+- **Customer Login**: Coming soon - dedicated customer portal for order management and account access
+- **Protected Routes**: Automatic redirection based on user type and authentication status
+- **JWT Token Management**: Secure authentication with automatic token validation and refresh
 
-## Providers
+### Sales Representative Dashboard
 
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
+- Customer management and company oversight
+- Order tracking and management
+- Quote generation and management
+- Cart and wishlist oversight
+- Responsive design with mobile-friendly navigation
 
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
+### API Integration
 
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Ecwid by Lightspeed](https://github.com/Ecwid/ecwid-nextjs-commerce/) ([Demo](https://ecwid-nextjs-commerce.vercel.app/))
-- [Geins](https://github.com/geins-io/vercel-nextjs-commerce) ([Demo](https://geins-nextjs-commerce-starter.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Prodigy Commerce](https://github.com/prodigycommerce/nextjs-commerce) ([Demo](https://prodigy-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-- [Wix](https://github.com/wix/headless-templates/tree/main/nextjs/commerce) ([Demo](https://wix-nextjs-commerce.vercel.app/))
-- [Fourthwall](https://github.com/FourthwallHQ/vercel-commerce) ([Demo](https://vercel-storefront.fourthwall.app/))
+- **GraphQL API**: Connects to Imagination Media B2B ordering middleware
+- **Apollo Client**: Robust GraphQL client with caching and error handling
+- **Real-time Updates**: Automatic data synchronization with backend systems
 
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
+### Modern Architecture
 
-## Integrations
+- **Next.js 15**: Latest App Router with React Server Components
+- **TypeScript**: Full type safety throughout the application
+- **Tailwind CSS**: Utility-first styling with responsive design
+- **Server Actions**: Optimized server-side operations
 
-Integrations enable upgraded or additional functionality for Next.js Commerce
+## Getting Started
 
-- [Orama](https://github.com/oramasearch/nextjs-commerce) ([Demo](https://vercel-commerce.oramasearch.com/))
+### Prerequisites
 
-  - Upgrades search to include typeahead with dynamic re-rendering, vector-based similarity search, and JS-based configuration.
-  - Search runs entirely in the browser for smaller catalogs or on a CDN for larger.
+- Node.js 18+
+- npm or pnpm package manager
+- Access to the B2B ordering middleware API
 
-- [React Bricks](https://github.com/ReactBricks/nextjs-commerce-rb) ([Demo](https://nextjs-commerce.reactbricks.com/))
-  - Edit pages, product details, and footer content visually using [React Bricks](https://www.reactbricks.com) visual headless CMS.
+### Environment Setup
 
-## Running locally
-
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
-
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+1. Copy the environment variables from `.env.example` to `.env.local`:
 
 ```bash
+cp .env.example .env.local
+```
+
+2. Configure the required environment variables in `.env.local`:
+
+```bash
+COMPANY_NAME="Your Company Name"
+SITE_NAME="B2B Ordering Storefront"
+NEXT_PUBLIC_API_URL="https://b2bapp-api.imdigital.com/graphql"
+```
+
+> Note: You should not commit your `.env.local` file as it may contain sensitive configuration.
+
+### Installation and Development
+
+1. Install dependencies:
+
+```bash
+npm install
+# or
 pnpm install
+```
+
+2. Run the development server:
+
+```bash
+npm run dev
+# or
 pnpm dev
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+### Authentication Flow
 
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pnpm dev` to ensure everything is working correctly.
-</details>
+#### Sales Representative Login
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+1. Navigate to `/login/sales-rep`
+2. Enter your sales representative credentials
+3. Access the sales dashboard at `/dashboard`
 
-You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+#### Customer Login
+
+1. Navigate to `/login/customer`
+2. Currently shows "Coming Soon" - customer authentication will be available soon
+3. Sign up for notifications when customer portal is ready
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run prettier:check` - Check code formatting
+
+## API Integration
+
+This application connects to the Imagination Media B2B ordering middleware API using GraphQL. The API provides:
+
+- Sales representative authentication
+- Customer and company management
+- Order and quote processing
+- Cart and wishlist functionality
+- Product catalog access
+
+### GraphQL Endpoint
+
+The default API endpoint is configured to use the demo environment:
+
+```
+https://b2bapp-api.imdigital.com/graphql
+```
+
+For production deployments, update the `NEXT_PUBLIC_API_URL` environment variable to point to your production API endpoint.
+
+## Deployment
+
+This application can be deployed to any platform that supports Next.js applications:
+
+- **Vercel**: Recommended for seamless deployment with automatic builds
+- **Netlify**: Alternative hosting with similar features
+- **Docker**: Containerized deployment for custom infrastructure
+
+Make sure to configure the environment variables in your deployment platform to match your production API endpoints.
