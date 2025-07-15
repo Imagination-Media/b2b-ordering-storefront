@@ -7,9 +7,7 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
-import { AuthProvider } from "../lib/auth-context";
-import { ApolloProvider } from "@apollo/client";
-import client from "../lib/apollo-client";
+import { Providers } from "../components/providers";
 
 const { SITE_NAME } = process.env;
 
@@ -36,18 +34,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-        <ApolloProvider client={client}>
-          <AuthProvider>
-            <CartProvider cartPromise={cart}>
-              <Navbar />
-              <main>
-                {children}
-                <Toaster closeButton />
-                <WelcomeToast />
-              </main>
-            </CartProvider>
-          </AuthProvider>
-        </ApolloProvider>
+        <Providers>
+          <CartProvider cartPromise={cart}>
+            <Navbar />
+            <main>
+              {children}
+              <Toaster closeButton />
+              <WelcomeToast />
+            </main>
+          </CartProvider>
+        </Providers>
       </body>
     </html>
   );
