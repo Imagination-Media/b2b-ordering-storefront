@@ -61,6 +61,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     SalesRepLoginVariables
   >(SALES_REP_LOGIN_MUTATION, {
     onCompleted: (data) => {
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          "Auth: Login mutation completed with full response:",
+          JSON.stringify(data, null, 2),
+        );
+        console.log(
+          "Auth: authenticateSalesRep structure:",
+          data?.authenticateSalesRep,
+        );
+        console.log(
+          "Auth: Is array?",
+          Array.isArray(data?.authenticateSalesRep),
+        );
+        if (data?.authenticateSalesRep) {
+          console.log("Auth: First element:", data.authenticateSalesRep[0]);
+        }
+      }
+
       if (data?.authenticateSalesRep?.[0]?.token) {
         const salesRepData = data.authenticateSalesRep[0];
         const token = salesRepData.token;
@@ -69,11 +87,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userType: "salesRep",
         };
 
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: Saving to localStorage:", {
+            token: token.substring(0, 20) + "...",
+            userData,
+          });
+        }
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
         setError(null);
+
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: Successfully saved to localStorage");
+          console.log(
+            "Auth: Verification - token in localStorage:",
+            localStorage.getItem("token") ? "EXISTS" : "NULL",
+          );
+          console.log(
+            "Auth: Verification - user in localStorage:",
+            localStorage.getItem("user") ? "EXISTS" : "NULL",
+          );
+        }
       } else {
+        if (process.env.NODE_ENV !== "production") {
+          console.log(
+            "Auth: No token found in response structure. Full data:",
+            data,
+          );
+          console.log(
+            "Auth: Expected path data?.authenticateSalesRep?.[0]?.token failed",
+          );
+        }
         setError("Authentication failed. Please check your credentials.");
       }
     },
@@ -103,7 +149,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
@@ -116,42 +162,106 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const isTokenValid = (token: string): boolean => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return false;
     }
     try {
-      const parts = token.split('.');
+      const parts = token.split(".");
       if (parts.length !== 3 || !parts[1]) {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: Invalid token format");
+        }
         return false;
       }
       const payload = JSON.parse(window.atob(parts[1]));
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Auth: Token payload:", payload);
+      }
+
+      if (!payload.exp) {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: Token has no expiration, considering valid");
+        }
+        return true;
+      }
+
       const currentTime = Date.now() / 1000;
-      return payload.exp > currentTime;
-    } catch {
+      const isValid = payload.exp > currentTime;
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Auth: Token validation:", {
+          exp: payload.exp,
+          currentTime,
+          isValid,
+          timeUntilExpiry: payload.exp - currentTime,
+        });
+      }
+
+      return isValid;
+    } catch (error) {
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Auth: Token validation error:", error);
+      }
       return false;
     }
   };
 
   useEffect(() => {
     const initializeAuth = () => {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
+        if (process.env.NODE_ENV !== "production") {
+          console.log(
+            "Auth: Server-side rendering, skipping auth initialization",
+          );
+        }
         setIsLoading(false);
         return;
+      }
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Auth: Initializing authentication...");
       }
 
       const token = localStorage.getItem("token");
       const userData = localStorage.getItem("user");
 
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Auth: Retrieved from localStorage:", {
+          hasToken: !!token,
+          hasUserData: !!userData,
+          tokenLength: token?.length || 0,
+        });
+      }
+
       if (token && userData && isTokenValid(token)) {
         try {
           const parsedUser = JSON.parse(userData);
+          if (process.env.NODE_ENV !== "production") {
+            console.log(
+              "Auth: Successfully restored user session:",
+              parsedUser,
+            );
+          }
           setUser(parsedUser);
         } catch (error) {
           console.error("Error parsing user data:", error);
+          if (process.env.NODE_ENV !== "production") {
+            console.log("Auth: Failed to parse user data, logging out");
+          }
           logout();
         }
       } else if (token) {
+        if (process.env.NODE_ENV !== "production") {
+          console.log(
+            "Auth: Token exists but is invalid or missing user data, logging out",
+          );
+        }
         logout();
+      } else {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: No token found, user not authenticated");
+        }
       }
 
       setIsLoading(false);
@@ -160,11 +270,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initializeAuth();
 
     const checkTokenExpiration = () => {
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         return;
       }
       const token = localStorage.getItem("token");
       if (token && !isTokenValid(token)) {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Auth: Token expired, logging out");
+        }
         logout();
       }
     };
