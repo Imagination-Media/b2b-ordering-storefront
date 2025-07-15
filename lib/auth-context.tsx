@@ -103,8 +103,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
     setUser(null);
     setError(null);
   };
@@ -114,8 +116,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const isTokenValid = (token: string): boolean => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
     try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
+      const parts = token.split('.');
+      if (parts.length !== 3 || !parts[1]) {
+        return false;
+      }
+      const payload = JSON.parse(window.atob(parts[1]));
       const currentTime = Date.now() / 1000;
       return payload.exp > currentTime;
     } catch {
@@ -125,6 +134,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const initializeAuth = () => {
+      if (typeof window === 'undefined') {
+        setIsLoading(false);
+        return;
+      }
+
       const token = localStorage.getItem("token");
       const userData = localStorage.getItem("user");
 
@@ -146,6 +160,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initializeAuth();
 
     const checkTokenExpiration = () => {
+      if (typeof window === 'undefined') {
+        return;
+      }
       const token = localStorage.getItem("token");
       if (token && !isTokenValid(token)) {
         logout();
