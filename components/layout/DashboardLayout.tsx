@@ -3,6 +3,17 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
+import {
+  Building2,
+  FileText,
+  Heart,
+  LogOut,
+  Menu,
+  ShoppingBag,
+  ShoppingCart,
+  Users,
+  X,
+} from "lucide-react";
 
 interface NavItem {
   title: string;
@@ -10,180 +21,36 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const UsersIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-    />
-  </svg>
-);
-
-const BuildingIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-    />
-  </svg>
-);
-
-const ShoppingBagIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z"
-    />
-  </svg>
-);
-
-const ShoppingCartIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6 0v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-8 0v4.01"
-    />
-  </svg>
-);
-
-const FileTextIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-    />
-  </svg>
-);
-
-const HeartIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-    />
-  </svg>
-);
-
-const MenuIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M4 6h16M4 12h16M4 18h16"
-    />
-  </svg>
-);
-
-const XIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M6 18L18 6M6 6l12 12"
-    />
-  </svg>
-);
-
-const LogOutIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-    />
-  </svg>
-);
-
 const navItems: NavItem[] = [
   {
     title: "Customers",
     href: "/dashboard/customers",
-    icon: UsersIcon,
+    icon: Users,
   },
   {
     title: "Companies",
     href: "/dashboard/companies",
-    icon: BuildingIcon,
+    icon: Building2,
   },
   {
     title: "Orders",
     href: "/dashboard/orders",
-    icon: ShoppingBagIcon,
+    icon: ShoppingBag,
   },
   {
     title: "Carts",
     href: "/dashboard/carts",
-    icon: ShoppingCartIcon,
+    icon: ShoppingCart,
   },
   {
     title: "Quotes",
     href: "/dashboard/quotes",
-    icon: FileTextIcon,
+    icon: FileText,
   },
   {
     title: "Wishlists",
     href: "/dashboard/wishlists",
-    icon: HeartIcon,
+    icon: Heart,
   },
 ];
 
@@ -225,7 +92,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <h1 className="text-xl font-bold text-gray-900">B2B Dashboard</h1>
         </div>
         <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
-          <XIcon className="h-6 w-6" />
+          <X className="h-6 w-6" />
         </button>
       </div>
 
@@ -237,7 +104,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               className="w-full flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900"
               onClick={() => handleNavigation(item.href)}
             >
-              <item.icon className="mr-3 h-5 w-5" />
+              <item.icon className="mr-2 h-4 w-4" />
               {item.title}
             </button>
           ))}
@@ -257,7 +124,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           className="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-red-100"
           onClick={handleLogout}
         >
-          <LogOutIcon className="mr-3 h-5 w-5" />
+          <LogOut className="mr-2 h-4 w-4" />
           Logout
         </button>
       </div>
@@ -292,7 +159,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             onClick={() => setSidebarOpen(true)}
             className="text-gray-500 hover:text-gray-700"
           >
-            <MenuIcon className="h-6 w-6" />
+            <Menu className="h-6 w-6" />
           </button>
         </div>
 
