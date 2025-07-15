@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
 import { Providers } from "../components/providers";
+import { CustomerProvider } from "../lib/customer-context";
 
 const { SITE_NAME } = process.env;
 
@@ -28,22 +29,23 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  // Don't await the fetch, pass the Promise to the context provider
-  const cart = getCart();
+  const cart = Promise.resolve(undefined);
 
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-        <Providers>
-          <CartProvider cartPromise={cart}>
-            <Navbar />
-            <main>
-              {children}
-              <Toaster closeButton />
-              <WelcomeToast />
-            </main>
-          </CartProvider>
-        </Providers>
+        <CustomerProvider>
+          <Providers>
+            <CartProvider cartPromise={cart}>
+              <Navbar />
+              <main>
+                {children}
+                <Toaster closeButton />
+                <WelcomeToast />
+              </main>
+            </CartProvider>
+          </Providers>
+        </CustomerProvider>
       </body>
     </html>
   );
